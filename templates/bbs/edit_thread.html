@@ -1,0 +1,107 @@
+{% extends 'index.htm' %}
+{% block title %} - {{cat.title}} 编辑文章{% endblock %}
+{% block header %}    
+    <link rel="stylesheet" href="/s/edit/jquery.wysiwyg.css" type="text/css"/>     
+    <link rel="stylesheet" href="/s/edit/jquery.wysiwyg.modal.css" type="text/css"/> 
+    <link rel="stylesheet" href="/s/edit/jquery.simplemodal.css" type="text/css"/> 
+    <script type="text/javascript" src="/s/edit/jquery.js"></script>
+    <script type="text/javascript" src="/s/edit/jquery.wysiwyg.js"></script> 
+    <script type="text/javascript" src="/s/edit/jquery.simplemodal.js"></script> 
+    <script type="text/javascript" src="/s/edit/wysiwyg.image.js"></script> 
+    <script type="text/javascript" src="/s/edit/wysiwyg.link.js"></script> 
+    <script type="text/javascript" src="/s/edit/wysiwyg.table.js"></script>
+    <script type="text/javascript" src="/s/edit/wysiwyg.i18n.js"></script>
+	<script type="text/javascript" src="/s/edit/lang.cn.js"></script>
+    
+    <script type="text/javascript"> 
+    (function($) {
+        $(document).ready(function() {			
+            $('#threadtext').wysiwyg({
+                initialContent:'',
+                controls: {			
+                    increaseFontSize : { visible : true },
+                    decreaseFontSize : { visible : true },
+                    html  : { visible: true }
+                },
+                plugins:{ i18n:{ lang: 'cn' }
+                }
+            });
+        });
+    })(jQuery);
+    </script> 
+{% endblock %}
+{% block content %}
+<p>欢迎光临 厦门网球网论坛， 在这里你可以畅所欲言。</p>
+<div class="bread" style="float:none;">
+    <a href="/bbs/">厦门网球论坛</a> > <a href="/bbs/{{catid}}/{{thread.id}}/">{{thread.title}}</a> > 编辑
+</div>
+<script>
+    function checkthread(){
+		$('#do_submit').hide();
+        var title = document.getElementById("threadname").value;
+        
+        if (title.length == 0){
+            var _html = "<font color='red'>请填写标题!</font>";
+            document.getElementById("titleNotice").innerHTML = _html;
+            document.getElementById("threadname").focus();
+			$('#do_submit').show();
+            return false;
+        } else if (title.length > 100){
+            var _html = "<font color='red'>标题长度必须小于100！</font>";
+            document.getElementById("titleNotice").innerHTML = _html;
+            document.getElementById("threadname").focus();
+			$('#do_submit').show();
+            return false;
+        }
+        
+        document.getElementById("titleNotice").innerHTML = '';
+        
+        var text = document.getElementById("threadtext").value;
+        
+        if (text.length < 5){
+            var _html = "<font color='red'>内容必须多于5个字!</font>";
+            document.getElementById("textNotice").innerHTML = _html;
+            $('#do_submit').show();
+            return false;
+        } else if (text.length > 25000){
+            
+            var _html = "<font color='red'>内容长度必须小于2500！</font>";
+            document.getElementById("textNotice").innerHTML = _html;
+            $('#do_submit').show();
+            return false;
+        }
+        
+        return true;
+    }
+	
+	function code(id){
+        var _html = "<fieldset class='code'><legend>Code: "
+                +"</legend><br></fieldset><p><br></p>";
+        $('#'+ id ).data('wysiwyg').insertHtml(_html);
+    }
+</script>
+
+<form action="/bbs/{{catid}}/{{thread.id}}/edit/" method="post" onsubmit="return checkthread();">
+    <table>
+        <tr>
+            <td>文章标题</td>
+            <td><input id="threadname" name="threadname" type="text" size="100"
+                value="{{thread.title}}"       maxlength="100"/>
+                <div id="titleNotice">必须填写，最长100字。</div></td>
+        </tr>
+        <tr>
+            <td>文章内容</td>
+            <td><textarea id="threadtext" name="threadtext" cols="100" rows="20">{{thread.text|safe}}</textarea>
+                <div id="textNotice">必须填写，最短5个字，最长2500字。</div>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+				<input type="submit" value="发表" />				
+                <a href="javascript:code('threadtext');">插入代码</a>
+			</td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

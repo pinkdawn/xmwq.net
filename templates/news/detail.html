@@ -1,0 +1,72 @@
+{% extends 'index.htm' %}
+{% block title %} - {{article.title}}{% endblock %}
+{% block header %}
+    <script type="text/javascript" src="/s/edit/jquery.js"></script> 
+{% endblock %}
+{% block content %}
+<script>
+    $().ready(function(){
+        {% if user.is_authenticated %}
+        $("input[name='nick_name']").val("{{user.username}}");
+        {% endif %}
+    });
+    
+    function check_comment(){
+        if ($('textarea[name="comment_text"]').val().length==0){
+            alert("请输入评论内容！");
+            $('textarea[name="comment_text"]').focus();
+            return false;
+        }
+        return true;
+    }
+</script>
+<div class="explanation">    .
+    <div style="position:absolute;top:0px;right:0px">
+        <a href="/news/create/">+ 新建</a>
+        <a href="/news/edit/{{article.id}}/">o 修改</a>
+        <a href="/news/del/{{article.id}}/" onclick="return confirm('删除这篇文章？');">
+            x 删除
+        </a>
+    </div>
+</div>
+<div class="left">
+    
+</div>
+<div class="lineL" style="width:700px;float:left;padding-left:0;">
+    <div style="text-align:center"><h1> {{article.title}} </h1></div>
+    <p style="color:gray"> {{path}}作者： {{article.author}} , {{article.time|date:"Y-m-d"}}</p>
+    <p> {{article.text|safe}}</p>
+    
+    <p style="color:gray">评论</p>
+    {% for c in comments %}
+        <table class="comment"><tr>
+            <td width="50px"><img src="/s/img/qq.jpg"></td>
+            <td width="600px">
+                <font color="black">{{c.nick}} ({{c.email}}) {{c.time|date:"Y-m-d H:i"}}</font> 
+                <p>{{c.text}}</p>
+            </td>
+        </tr></table>
+    {% endfor %}
+    <form action="/news/comment/{{article.id}}/" method="post" onsubmit="return check_comment();">
+        <table>
+            <tr>
+                <td>昵称</td>
+                <td><input name="nick_name" type="text" size="40" maxlength="40" value="匿名网友"></td>
+            </tr>
+            <tr>
+                <td>Email / 网址</td>
+                <td><input name="email" type="text" size="40" maxlength="40"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><textarea name="comment_text" cols="40" rows="5"></textarea></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="评论"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+{% endblock %}

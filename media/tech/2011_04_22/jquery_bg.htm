@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- saved from url=(0036)http://snook.ca/technical/jquery-bg/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<title>jQuery Background Test</title>
+
+<style type="text/css">
+	div.d a {display:block;padding:5px 10px;height:100%;color:#FFF;text-decoration:none;border:none;}	
+	div.d a {background:url(bg.jpg) repeat -20px 35px;}
+</style>
+
+<script type="text/javascript" src="jquery-1.2.6.min.js"></script>
+<script type="text/javascript" src="jquery.bgpos.js"></script>
+
+<script type="text/javascript">
+$(function(){
+$('a')
+	.css( {backgroundPosition: "-20px 35px"} )
+	.mouseover(function(){
+		$(this).stop().animate({backgroundPosition:"(-20px 94px)"}, {duration:500})
+	})
+	.mouseout(function(){
+		$(this).stop().animate(
+			{backgroundPosition:"(40px 35px)"}, 
+			{duration:200, complete:function(){
+				$(this).css({backgroundPosition: "-20px 35px"})
+			}}
+		)
+	})
+});
+</script>
+
+</head>
+<body>
+<p>鼠标移上去试一下！</p>
+	<div class="d" style="width:100px;float:left">
+	<a>天气</a>
+	</div>
+	<div class="d" style="width:100px;float:left">
+	<a>股票</a>
+	</div>
+	<div class="d" style="width:100px;float:left">
+	<a>财经</a>
+	</div>
+	<div class="d" style="width:100px;float:left">
+	<a>图片</a>
+	</div>
+
+</body></html>

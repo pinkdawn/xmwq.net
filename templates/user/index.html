@@ -1,0 +1,33 @@
+{% extends 'index.htm' %}
+{% block title %} - 用户详细信息{% endblock %}
+{% block header %}    
+{% endblock %}
+
+{% block content %}
+<table>
+    <tr>
+        <td width="100px">用户名：</td>
+        <td>{{user.username}}</td>
+    </tr>
+    <tr>
+        <td>注册时间</td>
+        <td>{{user.last_login|date:"Y-m-d"}}</td>
+    </tr>
+    <tr>
+        <td>上次登录</td>
+        <td>{{user.last_login|date:"Y-m-d"}}</td>
+    </tr>
+    <tr>
+        <td>描述：</td>
+        <td>{{user.get_profile.desc}}</td>
+    </tr>
+    <tr>
+        <td>头像:</td>
+        <td><img src='/u/{{user.get_profile.avatar}}' width="100px"></td>
+    </tr>
+</table>
+<p>
+    <a href="/user/edit/">修改头像</a>
+    <a href="/user/chpwd/">修改密码</a>
+</p>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'index.htm' %}
+{% block title %} - 登陆{% endblock %}
+{% block content %}
+<form id="form" name="form" method="post" action="/accounts/login/">
+    {% csrf_token %}
+    <table>        
+        {{form}}
+        <tr>
+            <td>
+                {% if next %}
+                    <input type="hidden" name="next" id="next" value="{{next}}"/>
+                {% endif %}
+            </td>
+            <td>
+                <input type="submit" value="登录" />
+                <a href="/pwd/reset/" >忘记密码</a>
+                <a href="/user/register/" >注册</a>
+            </td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

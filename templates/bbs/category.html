@@ -1,0 +1,97 @@
+{% extends 'index.htm' %}
+{% block title %} - {{cat.title}}{% endblock %}
+{% block content %}
+<div>
+    <a href="/bbs/">厦门网球论坛</a> > <a href="/bbs/{{cat.id}}/">{{cat.title}}</a>    
+</div>
+<div>  
+    <div class="page">
+        <a class="new_thread" href="/bbs/{{cat.id}}/new/">写文章</a>
+    </div>
+</div>
+{% ifequal page.number 1 %}
+<table class="list" style="padding:0px;text-align:center;">
+    {% for top in tops %}
+    <tr>
+        <td width="40px"><font color="red">Top</font></td>
+        <td style="width:550px;text-align:left;"><a href="/bbs/{{cat.id}}/{{top.id}}/">{{top.title}}</a></td>
+        <td width="160px"><a href="/bbs/user/{{top.user.id}}/">{{top.user.username}}</a></td>
+        <td width="160px">{{top.time|date:"Y-m-d H:i"}}</td>
+        <td width="160px">{{top.posts}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endifequal %}
+<table class="list" style="padding:0px;text-align:center;">
+    <tr class="tableheader">
+        <td width="20px"></td>
+        <td width="550px;">主题</td>
+        <td width="60px">作者</td>
+        <td width="60px">发表于</td>
+        <td width="60px">最后回复</td>
+        <td width="60px">最后发表</td>
+        <td width="60px">回复数</td>        
+    </tr>
+    {% for t in threads %}
+    <tr style="height:40px;border-top:solid #ddd 1px;">
+        <td>
+            <img src="/s/img/folder_new.gif" />
+        </td>
+        <td style="text-align:left;">
+            <a href="/bbs/{{cat.id}}/{{t.0.id}}/"title="{{t.0.title}}">
+                {{t.0.title}}
+            {% ifequal t.0.time.date t.0.time.date.today %}
+                <font color="red">新</font>            
+            {% endifequal %}
+            </a>
+        </td>
+        <td><a href="/bbs/user/{{t.0.user.id}}/">{{t.0.user.username}}</a></td>
+        <td>{{t.0.time|date:"Y-m-d"}}</td>        
+        <td>
+            {% if t.2 %}
+                <a href="/bbs/user/{{t.2.user.id}}/">{{ t.2.user.username }}</a>
+            {% else %}
+                <a href="/bbs/user/{{t.0.user.id}}/">{{t.0.user.username}}</a>
+            {% endif %}
+        </td>
+        <td>
+            {% if t.2 %}
+                {{ t.2.time|date:"Y-m-d" }}<br>{{ t.2.time|date:"H:i" }}
+            {% else %}
+                {{t.0.time|date:"Y-m-d"}}<br>{{ t.0.time|date:"H:i" }}
+            {% endif %}
+        </td>
+        <td>
+            {{t.1}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div style="width:auto;text-align:left;">
+    <div class="page">
+        <a href='?page={{page.paginator.num_pages}}'>>></a>
+    </div>
+    <div class="page">
+        {% if page.has_next %}
+        <a href='?page={{page.next_page_number}}'>></a>
+        {% else %}
+        <font color='grey'>></font>
+        {% endif %}
+    </div>
+    <script>
+        page({{page.number}}, {{page.paginator.num_pages}}, 5);
+    </script>
+    <div class="page">
+        {% if page.has_previous %}
+        <a href='?page={{page.previous_page_number}}'><</a>
+        {% else %}
+        <font color='grey'><</font>
+        {% endif %}
+    </div>
+    <div class="page">
+        <a href='?page=1'><<</a>
+    </div>
+</div>
+
+{% endblock %}

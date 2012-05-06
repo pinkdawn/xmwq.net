@@ -1,0 +1,16 @@
+{% extends 'index.htm' %}
+{% block title %} - 论坛{% endblock %}
+{% block content %}
+<div id="cse" style="width: 100%;">Loading</div>
+<script src="//www.google.com/jsapi" type="text/javascript"></script>
+<script type="text/javascript"> 
+  google.load('search', '1', {language : 'zh-CN'});
+  google.setOnLoadCallback(function() {
+	var customSearchControl = new google.search.CustomSearchControl('012894963734648597880:nq8zqlcqp14');
+	customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+	customSearchControl.draw('cse');
+  }, true);
+</script>
+<link rel="stylesheet" href="//www.google.com/cse/style/look/default.css" type="text/css" />  
+
+{% endblock %}

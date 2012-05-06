@@ -1,0 +1,21 @@
+{% extends 'index.htm' %}
+{% block title %} - 文章列表{% endblock %}
+{% block content %}
+<div class="explanation">
+    .
+    <div style="position:absolute;top:0px;right:0px;">
+        <a href="/news/create/">+ 创建一篇新文章</a>
+    </div>
+</div>
+<table>
+{% for a in articles %}
+    <tr style="border-bottom:dotted gray 1px;">
+        <td width="250px">
+            <a href="/news/{{a.id}}/">{{a.title|slice:":20"}}</a>
+        </td>
+        <td width="300px">{{a.text|safe|slice:":20"}}</td>
+        <td width="100px">{{a.time|date:"Y-m-d"}}</td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}

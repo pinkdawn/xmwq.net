@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC “-//W3C//DTD XHTML 1.0 Transitional//EN” “http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd”>
+<html>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <head>
+        <link rel="stylesheet" type="text/css" href="/s/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="/s/css/base.css" />
+        <script type="text/javascript" src="/s/edit/jquery.js"></script>
+        {% block header %}{% endblock %}
+        
+        <title>厦门网球网 {% block title %}{% endblock %}</title>
+        <script>
+            /*
+            * 打印分页的当前页面，及离其最近的前后页面。
+            * currentPage: 当前页面数。
+            * totalPage: 总共页面数
+            * numOfPages: 分别显示前后多少页面。
+            * 如 currentPage=4, totalPage=7, numOfPages=2，则显示 2,3,4,5,6
+            */
+            function page(currentPage, totalPage, numOfPages){                
+                //输出当前页面往后4个页面的导航按钮
+                for (var index = (currentPage + numOfPages) > totalPage ? totalPage : (currentPage + numOfPages);index> currentPage;index --)
+                    document.write("<div class='page'><a href='?page=" + index + "'>" + index + "</a></div>");
+                
+                document.write("<div class='page'><a href='?page=" + currentPage + "'><strong>"+currentPage+"</strong></div>");
+                if (currentPage == 1) return ;
+                    
+                //输出当前页面往前4个页面的导航按钮
+                var stopIndex = (currentPage - numOfPages) < 1 ? 1 : (currentPage - numOfPages);                
+                var startIndex = (currentPage -1) < 1 ? 1:(currentPage-1);                
+                    
+                for(var index = startIndex;index >= stopIndex;index--){                    
+                    document.write("<div class='page'><a href='?page=" + index + "'>" + index + "</a></div>");
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div id="summary" class="gradient" style="width:968px;">
+            <!--a href="/">厦门网球网</a-->            
+            <!--a href="/news/">新闻</a-->
+            <font style="color:black;font-size:25px;color:white;">厦门网球网</font>
+            
+            <div id="rightTop">
+                {% if user.is_authenticated %}
+                    欢迎你， <a href='/user/'>{{ user.username }}</a> 。
+                    <a class="logout" href='/accounts/logout/'> 登出 </a>
+                {% else %}
+                    <a href="/accounts/login/">登录</a>
+                    <a href="/user/register/">注册</a>
+                {% endif %}                
+            </div>
+        </div>
+        <div class="nav">
+            <div class="pageL"><a class="bbs" href="/bbs/">论 坛</a></div>
+            {% if user.is_authenticated %}
+            <div class="pageL"><a class="user" href="/user/">我的资料</a></div>
+            <div class="pageL"><a class="my_thread" href="/bbs/user/{{user.id}}/">我的文章</a></div>
+            {% endif %}
+            <div class="pageL"><a class="search" href="/search/">搜索本站</a></div>
+        </div>
+        
+        {% block content %}{% endblock %}        
+        <div style="height:50px;"></div>
+        <div id="bottombar">            
+            <div style="float:right;">&copy; xmwq.net 2011 All Rights Reserved.</div>
+            <a target="_blank" href="http://www.djangoproject.com/"><img src="/s/img/django-icon-naive-16.png"></a>
+            <div style="float:right;">
+                <a href="http://xmwq.net/bbs/5/1/">联系我们</a>
+                <a href="http://xmwq.net/bbs/5/2/">关于本站</a>                
+            </div>
+        </div>        
+    </body>    
+</html>

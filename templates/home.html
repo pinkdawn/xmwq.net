@@ -1,0 +1,83 @@
+{% extends 'index.htm' %}
+{% block title %} - 首页{% endblock %}
+{% block header %}
+    <script type="text/javascript" src="/s/edit/jquery.js"></script> 
+{% endblock %}
+{% block content %}
+
+<div class="box" style="width:300px;">
+    <img height="97%" width="97%" src="/s/img/tennis.jpg" />
+</div>
+<div class="box" style="width:350px;">
+    <div class="boxtitle" style="width:350px;">
+        {{categories.0.0.title}}
+        <div class="more">
+            <a href="/bbs/{{categories.0.0.id}}/">更多..</a>
+        </div>
+    </div>
+    <div class="boxcontent">
+        <ul>
+        {% for t in categories.0.1 %}
+            <li><a href="/bbs/{{categories.0.0.id}}/{{t.id}}/" title="{{t.title}}">
+            {{t.title|slice:"25"}}</a> <br></li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="box" style="width:300px;">
+    <div class="boxtitle" style="width:300px;">
+        本站新文章
+    </div>
+    <div class="boxcontent">
+        <ul>
+        {% for article in articles %}
+            <li><a href="/news/{{article.id}}/">{{article.title}}</a> <br></li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="box" style="width:300px;">
+    <div class="boxtitle" style="width:300px;">
+        {{categories.1.0.title}}
+        <div class="more">
+            <a href="/bbs/{{categories.1.0.id}}/">更多..</a>
+        </div>
+    </div>
+    <div class="boxcontent">
+        <ul>
+        {% for t in categories.1.1 %}
+            <li><a href="/bbs/{{categories.1.0.id}}/{{t.id}}/" title="{{t.title}}">
+            {{t.title|slice:"22"}}</a> <br></li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="box" style="width:350px;">
+    <div class="boxtitle" style="width:350px;">
+        {{categories.2.0.title}}
+        <div class="more">
+            <a href="/bbs/{{categories.2.0.id}}/">更多..</a>
+        </div>
+    </div>
+    <div class="boxcontent">
+        <ul>
+        {% for t in categories.2.1 %}
+            <li><a href="/bbs/{{categories.2.0.id}}/{{t.id}}/">{{t.title}}</a> <br></li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="box" style="width:300px;">
+    <div class="boxtitle" style="width:300px;">
+        天气预报
+    </div>
+    <div class="boxcontent">
+    <iframe src="http://m.weather.com.cn/m/pn12/weather.htm?id=101230201T " width="300"
+            height="140" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe>
+    来源： <a href="http://www.weather.com.cn/" target="_blank">中国天气网</a>
+    </div>
+</div>
+{% endblock %}

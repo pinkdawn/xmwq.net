@@ -1,0 +1,65 @@
+{% extends 'index.htm' %}
+{% block title %} - 访问历史{% endblock %}
+{% block content %}
+<div>
+    <a href="/bbs/">厦门网球论坛</a> > 查看访问列表 
+</div>
+<FORM METHOD=POST ACTION="http://www.ip138.com/ips8.asp" name="ipform" target="_blank">
+    <table><tr>
+        <td align="center">IP地址：
+            <input id="ip" type="text" name="ip" size="16"> 
+            <input type="submit" value="查询">
+            <INPUT TYPE="hidden" name="action" value="2">
+        </td>
+    </tr></table>
+</FORM>
+<table class="list">
+    <tr class="tableheader loglist">
+        <td style="width:18%;">ip</td>
+        <td style="width:20%;">访问时间</td>
+        <td style="width:18%;">用户</td>
+        <td style="width:44%;">访问帖子</td>
+    </tr>
+    {% for l in dict %}
+    <tr>
+        <td><a href="#" onclick="document.getElementById('ip').value='{{l.0}}';return false;">{{l.0}}</a></td>
+        <td>{{l.1|date:"Y-m-d H:i"}}</td>
+        <td>
+            {% if l.3 %}
+                {{l.3.username}} ID: {{l.3.id}}
+            {% else %}
+                匿名用户
+            {% endif %}            
+        </td>
+        <td>
+            <a href="/bbs/{{l.2.0.id}}/{{l.2.1.id}}/">{{l.2.1.title}}</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<div style="width:auto;text-align:left;">
+    <div class="page">
+        <a href='?page={{page.paginator.num_pages}}'>>></a>
+    </div>
+    <div class="page">
+        {% if page.has_next %}
+        <a href='?page={{page.next_page_number}}'>></a>
+        {% else %}
+        <font color='grey'>></font>
+        {% endif %}
+    </div>
+    <script>
+        page({{page.number}}, {{page.paginator.num_pages}}, 5);
+    </script>
+    <div class="page">
+        {% if page.has_previous %}
+        <a href='?page={{page.previous_page_number}}'><</a>
+        {% else %}
+        <font color='grey'><</font>
+        {% endif %}
+    </div>
+    <div class="page">
+        <a href='?page=1'><<</a>
+    </div>
+</div>
+{% endblock %}

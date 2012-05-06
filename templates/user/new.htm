@@ -1,0 +1,49 @@
+{% extends 'index.htm' %}
+{% block title %} - 注册用户{% endblock %}
+{% block header %}
+    <script type="text/javascript" src="/s/js/jquery.min.js"></script>
+    <script>
+    $().ready(function(){
+        $('label[for="id_avatar"]').html("上传头像");
+        $('label[for="id_desc"]').html("个人描述");
+        $('#id_avatar').parent().append("<font color='red'>图片小于50kb</font>");
+    });
+    
+    function test_image(file_id){
+        var file = $('#' + file_id);
+        var src = $(file).val();
+        
+        if (src.length ==0 ){
+			return true;
+		}
+        
+        if(!/.(gif|jpg|jpeg|png|gif|jpg|png)$/.test(src)){
+            alert("图片类型必须是.gif,jpeg,jpg,png中的一种")
+            return false;
+        }
+        return true;    
+    }    
+    </script>
+{% endblock %}
+{% block content %}
+
+    <div class="lineB">欢迎注册 Test ！请填写信息。</div>
+    <div>
+        <font color="red">{{msg}}</font>
+    </div>
+	<form enctype="multipart/form-data" action="/user/register/" method="post" onsubmit="return test_image('id_avatar');">
+		{% csrf_token %}
+		<table>
+			{{userAddForm}}
+            {{avatar_form}}
+			<tr>
+				<td></td>
+				<td>
+                    <input type="submit" value="提交注册"/>
+                    <a href="/accounts/login/">登录</a>
+                </td>
+			</tr>
+		</table>		
+	</form>
+    
+{% endblock %}

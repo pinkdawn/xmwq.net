@@ -1,0 +1,46 @@
+{% extends 'index.htm' %}
+{% block title %} - 编辑{% endblock %}
+{% block header %}    
+    <link rel="stylesheet" href="/s/edit/jquery.wysiwyg.css" type="text/css"/>     
+    <link rel="stylesheet" href="/s/edit/jquery.wysiwyg.modal.css" type="text/css"/> 
+    <link rel="stylesheet" href="/s/edit/jquery.simplemodal.css" type="text/css"/> 
+    <script type="text/javascript" src="/s/edit/jquery.js"></script>
+    <script type="text/javascript" src="/s/edit/jquery.wysiwyg.js"></script> 
+    <script type="text/javascript" src="/s/edit/jquery.simplemodal.js"></script> 
+    <script type="text/javascript" src="/s/edit/wysiwyg.image.js"></script> 
+    <script type="text/javascript" src="/s/edit/wysiwyg.link.js"></script> 
+    <script type="text/javascript" src="/s/edit/wysiwyg.table.js"></script>
+    <script type="text/javascript" src="/s/edit/wysiwyg.i18n.js"></script>
+	<script type="text/javascript" src="/s/edit/lang.cn.js"></script>
+{% endblock %}
+{% block content %}
+<script type="text/javascript"> 
+(function($) {
+	$(document).ready(function() {
+		$('#id_text').attr('rows',40).attr('cols','100').wysiwyg({
+			initialContent:'',
+			controls: {			
+				increaseFontSize : { visible : true },
+				decreaseFontSize : { visible : true },
+				html  : { visible: true }
+			},
+			plugins:{ i18n:{ lang: 'cn' }
+			}
+		});
+        $('#id_title').attr('size',100);
+        $('label[for="id_title"]').html("标题：");
+        $('label[for="id_text"]').html("正文：");
+	});
+})(jQuery);
+</script> 
+	<form action="/news/edit/{{form.instance.id}}/" method="post">
+		{% csrf_token %}
+		<table>
+			{{form}}
+			<tr>
+				<td></td>
+				<td><input type="submit" value="完成"/></td>
+			</tr>
+		</table>		
+	</form>
+{% endblock %}

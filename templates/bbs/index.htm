@@ -1,0 +1,68 @@
+{% extends 'index.htm' %}
+{% block title %} - 论坛{% endblock %}
+{% block content %}
+<P>欢迎光临厦门网球网论坛，在这里你可以畅所欲言！</p>
+{% if user.id %}<div>    
+    <div class="page">
+        <a class="my_thread" href="/bbs/user/{{user.id}}/">我的文章</a>
+    </div>
+    {% if user.username = 'pinkdawn' %}
+    <div class="page">
+        <a href="/bbs/log/">访问统计</a>
+    </div>
+    {% endif %}
+</div>{% endif %}
+
+<table class="list">
+    <tr class="tableheader">
+        <td width="20px"></td>
+        <td width="100px;"></td>
+        <td width="150px"></td>
+        <td width="400px">最后发表</td>
+        <td width="100px">总帖数/回复数</td>        
+    </tr>
+    {% for c in cats %}
+    <tr style="height:40px;border-bottom:solid #ddd 1px;">
+        <td>            
+            {% if c.3.1.last_reply_time.date and c.3.1.last_reply_time.date == c.3.1.last_reply_time.date.today %}
+            <img src="/s/img/forum_new.gif">
+            {%else%}
+            {% if c.3.0.last_reply_time.date and c.3.0.last_reply_time.date == c.3.0.last_reply_time.date.today %}
+            <img src="/s/img/forum_new.gif">
+            {%else%}
+            <img src="/s/img/forum.gif">
+            {% endif %}
+            {% endif %}
+        </td>
+        <td>
+            <a href="/bbs/{{c.0.id}}/">{{c.0.title}}</a>
+        </td>
+        <td style="color:gray;">{{c.0.desc}}</td>
+        <td style="color:gray;">
+            {% if c.3 %}
+            <a href="/bbs/{{c.0.id}}/{{c.3.1.id}}/" title="{{c.3.1.title}}">
+                {{ c.3.1.title|slice:"50" }}
+            </a> <br>
+            <a href="/bbs/user/{{c.3.1.user.id}}/">
+                <font color="gray">{{c.3.1.user.username}}</a>
+            </a>
+            / {{ c.3.1.last_reply_time|date:"Y-m-d H:i" }}
+            
+            <br>
+                
+            <a href="/bbs/{{c.0.id}}/{{c.3.0.id}}/" title="{{c.3.0.title}}">
+                {{ c.3.0.title|slice:"50" }}
+            </a> <br>
+            <a href="/bbs/user/{{c.3.0.user.id}}/">
+                <font color="gray">{{c.3.0.user.username}}</a>
+            </a>
+            / {{ c.3.0.last_reply_time|date:"Y-m-d H:i" }}
+            
+            {% endif %}
+        </td>
+        <td>{{c.1}}/{{c.2}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

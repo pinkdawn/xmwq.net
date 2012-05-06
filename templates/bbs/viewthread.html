@@ -1,0 +1,284 @@
+{% extends 'index.htm' %}
+{% block title %} - {{thread.title}}{% endblock %}
+{% block header %}    
+    <link rel="stylesheet" href="/s/edit/jquery.wysiwyg.css" type="text/css"/>   
+    
+    <script type="text/javascript" src="/s/edit/jquery.js"></script>
+    <script type="text/javascript" src="/s/edit/jquery.wysiwyg.js"></script>
+    <script type="text/javascript" src="/s/edit/wysiwyg.i18n.js"></script>
+	<script type="text/javascript" src="/s/edit/lang.cn.js"></script>   
+    <script type="text/javascript"> 
+    (function($) {
+        $(document).ready(function() {
+            $('#replytext').wysiwyg({
+                initialContent:'<p><br></p>',
+                plugins:{ i18n:{ lang: 'cn' }
+                }
+            });
+        });
+    })(jQuery);
+    
+    function addSmiles(){
+        var _html = "";            
+        for (var i=1;i<37;i++){
+            _html += "<img id='smile_'" +i +"' style='cursor:pointer;' width='30px' src='/s/img/smile/"+i+".gif' >";
+        }
+        
+        $("#smiles_control").html(_html);
+        $("img[id^='smile_']").click(function(){
+            smile('replytext', $(this).attr('src'));
+        });
+    }
+    
+    function smile(id, text){
+        var _html = "<img src='" + text + "' >"
+        $('#'+ id ).data('wysiwyg').insertHtml(_html);
+    }
+    
+    function quote(id, text, author){
+        var _html = "<fieldset class='quote'><legend>引用自： " + author
+                +"</legend>" + text + "</fieldset><p><br></p>";
+        $('#'+ id ).data('wysiwyg').insertHtml(_html);
+    }
+    function code(id){
+        var _html = "<fieldset class='code'><legend>Code: "
+                +"</legend><br></fieldset><p><br></p>";
+        $('#'+ id ).data('wysiwyg').insertHtml(_html);
+    }
+    </script> 
+{% endblock %}
+{% block content %}
+<script>
+    function checkReply(){
+        $('#do_submit').hide();
+        var reply = $("#replytext").data("wysiwyg").getContent();
+        if (reply.length < 5){
+            var _html = "<font color='red'>评论必须多于5个字！</font>";
+            document.getElementById('replyNotice').innerHTML = _html;
+            $('#replytext').data('wysiwyg')._f();
+            $('#do_submit').show();
+            return false;
+        } else if(reply.length >1000){
+            var _html = "<font color='red'>评论必须少于1000个字！</font>";
+            document.getElementById('replyNotice').innerHTML = _html;            
+            $('#replytext').data('wysiwyg')._f();
+            $('#do_submit').show();
+            return false;
+        }
+        
+        return true;
+    }
+</script>
+<p><a href="/bbs/">厦门网球论坛</a> > <a href="/bbs/{{cat.id}}/">{{cat.title}}</a> >
+{{thread.title}} </p>
+
+<div style="position:relative;">
+    <div class="page">
+        <a class="reply" href="#reply" onclick="$('#replytext').data('wysiwyg')._f();">回复</a>
+    </div>
+    <div class="page">
+        <a class="new_thread" href="/bbs/{{cat.id}}/new/">写文章</a>
+    </div>
+    {% if user.groups.all.0.name == 'admin'%}
+        {% if thread.is_commentable %}
+        <div class="page">
+            <a href="/bbs/{{cat.id}}/{{thread.id}}/close/">关闭评论</a>
+        </div>
+        {% else %}
+        <div class="page">
+            <a href="/bbs/{{cat.id}}/{{thread.id}}/open/">开启评论</a>
+        </div>
+        {% endif %}
+        {% if thread.is_top %}
+        <div class="page">
+            <a href="/bbs/{{cat.id}}/{{thread.id}}/untop/">取消置顶</a>
+        </div>
+        {% else %}
+        <div class="page">
+            <a href="/bbs/{{cat.id}}/{{thread.id}}/top/">置顶</a>
+        </div>
+        {% endif %}
+        
+        <div class="page">
+            <a href="/bbs/{{cat.id}}/{{thread.id}}/delete/" onclick="return confirm('确定要删除这个帖子？');">删除</a>
+        </div>
+    {% endif %}
+    {% if user.groups.all.0.name == 'admin' or user.id == thread.user.id %}
+        <div class="page">
+            <a href="/bbs/{{cat.id}}/{{thread.id}}/edit/">编辑</a>
+        </div>
+    {% endif %}
+</div>
+{% ifequal page.number 1  %}
+<table>
+    <tr>
+        <td class="pls">
+            <table style="border:none;background:transparent;">
+                <tr>
+                    <td width="60px;">作者：</td>
+                    <td>
+                        <a href="/bbs/user/{{thread.user.id}}/">{{thread.user.username}}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan=2>
+                        {% if thread.user.get_profile.avatar %}
+                        <img src="/u/{{thread.user.get_profile.avatar}}" width="139px"/>
+                        {% else %}
+                        <img src="/s/img/avatar.jpg">
+                        {% endif %}                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>上次登录</td>
+                    <td>{{thread.user.last_login|date:"Y-m-d"}}</td>
+                </tr>
+                <tr>
+                    <td>注册时间</td>
+                    <td>{{thread.user.date_joined|date:"Y-m-d"}}</td>
+                </tr>
+            </table>
+        </td>
+        <td style="vertical-align:top;">
+            <table style="border:none;">
+                <tr>
+                    <td style="height:170px;vertical-align:top;width:700px;">
+                        <p><strong>{{thread.title}}</strong></p>{{thread.text|safe}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <hr style="padding:0px;">
+                        <div class="pageL">
+                            <a class="reply" href="#reply" onclick="$('#replytext').data('wysiwyg')._f();">回复</a>
+                        </div>
+                        <div class="pageL">
+                            <a href="#reply" onclick="javascript:quote('replytext','{{thread.text|escapejs}}', '{{thread.user.username}}');">引用</a>
+                        </div> 
+                        <div class="page" style="border:none;background:none;">
+                            发表于：{{thread.time|date:"Y-m-d H:i"}}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+{% endifequal %}
+{% for r in page.object_list %}
+<table>
+    <tr>
+        <td class="pls">
+            <table style="border:none;background:transparent;">
+                <tr>
+                    <td width="60px;">作者：</td>
+                    <td>
+                        <a href="/bbs/user/{{r.user.id}}/">{{r.user.username}}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan=2>
+                        {% if r.user.get_profile.avatar %}
+                        <img src="/u/{{r.user.get_profile.avatar}}" width="139px"/>
+                        {% else %}
+                        <img src="/s/img/avatar.jpg">
+                        {% endif %}  
+                    </td>
+                </tr>
+                <tr>
+                    <td>上次登录</td>
+                    <td>{{r.user.last_login|date:"Y-m-d"}}</td>
+                </tr>
+                <tr>
+                    <td>注册时间</td>
+                    <td>{{r.user.date_joined|date:"Y-m-d"}}</td>
+                </tr>
+            </table>
+        </td>
+        <td style="vertical-align:top;">
+            <table style="border:none;">
+                <tr>
+                    <td style="height:170px;vertical-align:top;width:700px;">
+                        {{r.text|safe}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <hr style="padding:0px;">
+                        <div class="pageL">
+                            <a class="reply" href="#reply" onclick="$('#replytext').data('wysiwyg')._f();">回复</a>
+                        </div>
+                        <div class="pageL">
+                            <a href="#reply" onclick="javascript:quote('replytext','{{r.text|escapejs}}','{{r.user.username}}');">引用</a>
+                        </div>
+                        {% if user.groups.all.0.name == 'admin'%}
+                        <div class="pageL">
+                            <a href="/bbs/reply/{{cat.id}}/{{thread.id}}/{{r.id}}/delete/" onclick="return confirm('删除这条评论？');">删除</a>
+                        </div>    
+                        {% endif %}
+                        <div class="page" style="border:none;background:none;">
+                            <font color="red">#{{r.floor}}楼</font> 发表于：{{r.time|date:"Y-m-d H:i"}}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+{% endfor %}
+<div style="width:auto;text-align:left;">
+    <div class="page">
+        <a href='?page={{page.paginator.num_pages}}'>>></a>
+    </div>
+    <div class="page">
+        {% if page.has_next %}
+        <a href='?page={{page.next_page_number}}'>></a>
+        {% else %}
+        <font color='grey'>></font>
+        {% endif %}
+    </div>
+    <script>
+        page({{page.number}}, {{page.paginator.num_pages}}, 5);
+    </script>
+    <div class="page">
+        {% if page.has_previous %}
+        <a href='?page={{page.previous_page_number}}'><</a>
+        {% else %}
+        <font color='grey'><</font>
+        {% endif %}
+    </div>
+    <div class="page">
+        <a href='?page=1'><<</a>
+    </div>
+</div>
+{% if thread.is_commentable %}
+<table>
+    <tr>
+        <td style="width:200px;">
+            <div id="replyNotice">评论要多于5个字，少于200个字。</div>
+            <div id="smiles_control">
+                <a href="javascript:addSmiles();"/>插入表情<img src="/s/img/smile/21.gif"/></a>
+            </div>
+        </td>
+        <td>
+            <form action="/bbs/{{cat.id}}/{{thread.id}}/reply/" onsubmit="return checkReply();" method="post">
+                <textarea id="replytext" name="replytext" id="replytext" cols="80" rows="20"></textarea>
+                <a name="reply"></a>
+                <input id="do_submit" type="submit" value="评论" />
+                <a href="#" onclick="$('#replytext').data('wysiwyg').setContent('');return false;">清空</a>
+                <a href="javascript:code('replytext');">插入代码</a>
+            </form>
+        </td>
+    </tr>
+{% endif %}
+</table>
+
+{% endblock %}

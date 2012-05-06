@@ -1,0 +1,12 @@
+#Sun Nov 13 15:35:49 CST 2011
+eclipse.preferences.version=1
+encoding//bbs/views.py=UTF-8
+encoding//templates/bbs/category.html=UTF-8
+encoding//templates/bbs/index.htm=UTF-8
+encoding//templates/bbs/viewthread.html=UTF-8
+encoding//templates/bbs/viewuser.html=UTF-8
+encoding//templates/home.html=UTF-8
+encoding//templates/search.html=UTF-8
+encoding//templates/user/change_avatar.htm=UTF-8
+encoding//templates/user/index.html=UTF-8
+encoding//users/update.py=UTF-8

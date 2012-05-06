@@ -1,0 +1,57 @@
+{% extends 'index.htm' %}
+{% block title %} - 查看用户 {{client.username}}{% endblock %}
+{% block content %}
+<div>
+    <a href="/bbs/">厦门网球论坛</a> > 用户{{client.username}}的所有帖子    
+</div>
+<table class="list" style="padding:0px;text-align:center;">
+    <tr class="tableheader">
+        <td width="20px"></td>
+        <td width="550px;">帖子</td>        
+        <td width="120px">发表于</td>        
+        <td width="120px">最后发表</td>        
+    </tr>
+    {% for t in threads.object_list %}
+    <tr style="height:40px;border-top:solid #ddd 1px;">
+        <td>
+            {% ifequal t.1.time.date t.1.time.date.today %}
+            <font color="red">新</font>
+            {% endifequal %}
+        </td>
+        <td style="text-align:left;">
+            <a href="/bbs/{{t.0.id}}/{{t.1.id}}/"title="{{t.1.title}}">
+                {{t.1.title|slice:"50"}}
+            </a>
+        </td>
+        
+        <td>{{t.1.time|date:"Y-m-d H:i"}}</td>
+        <td>{{t.1.last_reply_time|date:"Y-m-d H:i"}}</td>        
+    </tr>
+    {% endfor %}
+</table>
+<div style="width:auto;text-align:left;">
+    <div class="page">
+        <a href='?page={{threads.paginator.num_pages}}'>>></a>
+    </div>
+    <div class="page">
+        {% if threads.has_next %}
+        <a href='?page={{threads.next_page_number}}'>></a>
+        {% else %}
+        <font color='grey'>></font>
+        {% endif %}
+    </div>
+    <script>        
+        page({{threads.number}}, {{threads.paginator.num_pages}}, 5);
+    </script>
+    <div class="page">
+        {% if threads.has_previous %}
+        <a href='?page={{threads.previous_page_number}}'><</a>
+        {% else %}
+        <font color='grey'><</font>
+        {% endif %}
+    </div>
+    <div class="page">
+        <a href='?page=1'><<</a>
+    </div>
+</div>
+{% endblock %}

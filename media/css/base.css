@@ -1,0 +1,27 @@
+div#content1 {position: relative;width: 380px;top: 0px;word-wrap:break-word;overflow:hidden;background-color: #1A1A1A;} 
+
+/* LINKS */
+a:link, a:visited {color:#0000CC;text-decoration: none;}
+a:hover {color: gray;text-decoration:underline;}
+a img {border: none;}
+
+/* TABLES */
+table {border-collapse: collapse;}
+td, th {font-size: 14px;line-height: normal;border-bottom: none;vertical-align: top;padding: 5px;border-bottom-color:#333;font-family: "Lucida Grande", Verdana, Arial, sans-serif;}
+th {text-align: left;font-size: 12px;font-weight: bold;}
+
+/* FORM DEFAULTS */
+input, textarea, select, .form-row p {margin: 2px 0;padding: 2px 3px;vertical-align: middle;font-family: "Lucida Grande", Verdana, Arial, sans-serif;font-weight: normal;font-size: 13px;}
+textarea {vertical-align: top !important;}
+form {margin: 0;padding: 0;}
+
+/* PAGE STRUCTURE */
+#container {position: relative;width: 100%;min-width: 760px;padding: 0;}
+#content {margin: 10px 15px;}
+.form th {border-right-width: 0px;border-bottom-width: 0px;border-right-style: solid;border-bottom-style: none;border-right-color: #7e7d68;}
+.form tr {border-right-width: 0px;border-bottom-width: 0px;border-right-style: solid;border-bottom-style: none;}
+.form td {border-right-width: 0px;border-bottom-width: 0px;border-top-style: none;border-right-style: solid;border-bottom-style: solid;border-left-style: none;border-right-color: #7D7D7D;}
+.form tr_none {border-right-width: 0px;border-bottom-width: 0px;border-top-style: none;border-right-style: solid;border-bottom-style: none;border-left-style: none;}
+.form table {border: 0px solid #7e7d68;background-color: #1A1A1A;border-bottom-width: 0px;}
+.form input {border-top-width: 0px;border-right-width: 0px;border-bottom-width: 0px;border-left-width: 0px;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;background-color: transparent;}
+.form select {border-top-width: 0px;border-right-width: 0px;border-bottom-width: 0px;border-left-width: 0px;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;background-color: transparent;}
