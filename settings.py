@@ -1,4 +1,4 @@
-# Django settings for myproject project.
+# Django settings for xmwq.net project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
