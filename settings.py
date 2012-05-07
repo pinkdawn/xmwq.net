@@ -45,7 +45,7 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = 'D:/home/pinkdawn/webapps/django/tennis/upload/'
+MEDIA_ROOT = '/home/zdy/www/tennis/upload/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -60,13 +60,12 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = '/media/'
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
-ADMIN_MEDIA_PREFIX = '/static/admin/'
-#ADMIN_MEDIA_PREFIX = '/media/'
+#ADMIN_MEDIA_PREFIX = '/static/admin/'
 STATIC_PATH = './media'
 
 # Additional locations of static files
@@ -105,7 +104,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'tennis.urls'
 
 TEMPLATE_DIRS = (
-    './templates',
+    '/home/zdy/www/tennis/templates',
 )
 
 INSTALLED_APPS = (
