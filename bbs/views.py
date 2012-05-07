@@ -90,12 +90,13 @@ def log(req):
     log_page = P(req,logs,28)
     _logs = []
     for l in log_page.object_list:
-        _ct = category_thread.objects.get(_t__id=l.thread_id)
-        if l.userid != 0:
-            _user = User.objects.get(id=l.userid)
-            _logs.append([l.ip, l.time, [_ct._c, _ct._t], _user])
-        else:
-            _logs.append([l.ip, l.time, [_ct._c, _ct._t]])
+        _ct = category_thread.objects.filter(_t__id=l.thread_id)
+        if _ct:
+            if l.userid != 0:
+                _user = User.objects.get(id=l.userid)
+                _logs.append([l.ip, l.time, [_ct[0]._c, _ct[0]._t], _user])
+            else:
+                _logs.append([l.ip, l.time, [_ct[0]._c, _ct[0]._t]])
     return rr('bbs/log.html',
             {'page':log_page,'dict':_logs,},
             context_instance = RequestContext(req))
