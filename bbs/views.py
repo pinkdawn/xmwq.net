@@ -1,5 +1,5 @@
 # coding=UTF-8
-from django.shortcuts import render_to_response as rr
+from django.shortcuts import render_to_response as rr, HttpResponseRedirect as rd
 from django.template import RequestContext
 from models import category, thread, category_thread, thread_reply
 from django.contrib.auth.decorators import login_required
@@ -69,6 +69,13 @@ def viewthread(req, cid, tid):
             {'cat':cat, 'thread':t,'page':_rp, },
             context_instance = RequestContext(req))
 
+def search(req, keyword):
+    _threads = P(req, [(x._c, x._t) for x in category_thread.objects.filter(_t__title__icontains=keyword).order_by('-_t__time')], 10)
+    return rr('bbs/search.html',
+            {'keyword': keyword, 'threads':_threads,},
+            context_instance = RequestContext(req))
+    
+
 @login_required
 def viewuser(req, uid):
     _u = User.objects.get(id=uid)
@@ -104,7 +111,9 @@ def log(req):
 @login_required
 def init(req):
     cats = [['网动鹭岛','最火热的鹭岛网球动态'], ['约球会友','喊上朋友，一起来运动吧！'], ['网坛新闻','网坛大事']]
+    i = 0
     for c,d in cats:
-        _temp = category(title = c, desc = d)        
+        _temp = category(title = c, desc = d, order=i)        
         _temp.save()
-        
+        i += 1
+    return rd('/')

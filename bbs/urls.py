@@ -19,5 +19,6 @@ urlpatterns = patterns('tennis.bbs',
     (r'^(\d+)/new/$','create.new'),
     
     (r'^user/(\d+)/$','views.viewuser'),
+    (r'^search/(?P<keyword>.+)/$','views.search'),
     (r'^log/$','views.log'),
 )

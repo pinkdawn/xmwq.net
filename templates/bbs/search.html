@@ -1,13 +1,18 @@
 {% extends 'index.htm' %}
-{% block title %} - 查看用户 {{client.username}}{% endblock %}
+{% block title %} - 搜索 {{keyword}}{% endblock %}
 {% block content %}
+<script>
+	jQuery(function(){
+		jQuery("#search_thread_title").val("{{keyword}}");
+	});
+</script>
 <div>
-    <a href="/bbs/">厦门网球论坛</a> > 用户{{client.username}}的所有帖子    
+    <a href="/bbs/">厦门网球论坛</a> > 含关键字 <span style="color:red">{{keyword}}</span> 的所有帖子    
 </div>
 <table class="list" style="padding:0px;text-align:center;">
     <tr class="tableheader">
         <td width="20px"></td>
-        <td width="550px;">帖子</td>
+        <td width="550px;">帖子</td>        
         <td width="120px">发表于</td>        
         <td width="120px">最后发表</td>        
     </tr>
@@ -20,7 +25,8 @@
         </td>
         <td style="text-align:left;">
             <a href="/bbs/{{t.0.id}}/{{t.1.id}}/"title="{{t.1.title}}">
-                {{t.1.title|slice:"50"}}
+            {% load highlight %}
+                {{t.1.title|slice:"50"|highlight:keyword}}
             </a>
         </td>
         

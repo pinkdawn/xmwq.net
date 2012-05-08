@@ -4,35 +4,19 @@
     <head>
         <link rel="stylesheet" type="text/css" href="/s/css/style.css" />
         <link rel="stylesheet" type="text/css" href="/s/css/base.css" />
-        <script type="text/javascript" src="/s/edit/jquery.js"></script>
-        {% block header %}{% endblock %}
-        
+        <script type="text/javascript" src="/s/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/s/js/jquery.hotkeys.js"></script>
+        <script type="text/javascript" src="/s/js/xmwq.js"></script>
+        {% block header %}{% endblock %}        
         <title>厦门网球网 {% block title %}{% endblock %}</title>
         <script>
-            /*
-            * 打印分页的当前页面，及离其最近的前后页面。
-            * currentPage: 当前页面数。
-            * totalPage: 总共页面数
-            * numOfPages: 分别显示前后多少页面。
-            * 如 currentPage=4, totalPage=7, numOfPages=2，则显示 2,3,4,5,6
-            */
-            function page(currentPage, totalPage, numOfPages){                
-                //输出当前页面往后4个页面的导航按钮
-                for (var index = (currentPage + numOfPages) > totalPage ? totalPage : (currentPage + numOfPages);index> currentPage;index --)
-                    document.write("<div class='page'><a href='?page=" + index + "'>" + index + "</a></div>");
-                
-                document.write("<div class='page'><a href='?page=" + currentPage + "'><strong>"+currentPage+"</strong></div>");
-                if (currentPage == 1) return ;
-                    
-                //输出当前页面往前4个页面的导航按钮
-                var stopIndex = (currentPage - numOfPages) < 1 ? 1 : (currentPage - numOfPages);                
-                var startIndex = (currentPage -1) < 1 ? 1:(currentPage-1);                
-                    
-                for(var index = startIndex;index >= stopIndex;index--){                    
-                    document.write("<div class='page'><a href='?page=" + index + "'>" + index + "</a></div>");
-                }
-            }
-        </script>
+        	jQuery(function(){
+        		jQuery("#search_thread_title").bind('keydown', 'return', function(event){
+        			do_search_title($(this).val());
+        			
+        		});
+        	});
+        </script>    
     </head>
     <body>
         <div id="summary" class="gradient" style="width:968px;">
@@ -56,7 +40,8 @@
             <div class="pageL"><a class="user" href="/user/">我的资料</a></div>
             <div class="pageL"><a class="my_thread" href="/bbs/user/{{user.id}}/">我的文章</a></div>
             {% endif %}
-            <div class="pageL"><a class="search" href="/search/">搜索本站</a></div>
+            <!--div class="pageL"><a class="search" href="/search/">搜索本站</a></div-->
+            <div class="pageR"><input id="search_thread_title" type="text" placeholder="搜索" /></div>
         </div>
         
         {% block content %}{% endblock %}        
