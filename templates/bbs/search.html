@@ -3,7 +3,7 @@
 {% block content %}
 <script>
 	jQuery(function(){
-		jQuery("#search_thread_title").val("{{keyword}}");
+		jQuery("#search_thread_title").focus().val("{{keyword}}");
 	});
 </script>
 <div>
@@ -25,7 +25,7 @@
         </td>
         <td style="text-align:left;">
             <a href="/bbs/{{t.0.id}}/{{t.1.id}}/"title="{{t.1.title}}">
-            {% load highlight %}
+            	{% load highlight %}
                 {{t.1.title|slice:"50"|highlight:keyword}}
             </a>
         </td>

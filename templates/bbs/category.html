@@ -2,7 +2,7 @@
 {% block title %} - {{cat.title}}{% endblock %}
 {% block content %}
 <div>
-    <a href="/bbs/">厦门网球论坛</a> > <a href="/bbs/{{cat.id}}/">{{cat.title}}</a>    
+    <a href="/bbs/">厦门网球论坛</a> &gt; <a href="/bbs/{{cat.id}}/">{{cat.title}}</a>    
 </div>
 <div>  
     <div class="page">
@@ -70,13 +70,13 @@
 
 <div style="width:auto;text-align:left;">
     <div class="page">
-        <a href='?page={{page.paginator.num_pages}}'>>></a>
+        <a id="last_page_link" href='?page={{page.paginator.num_pages}}'>&gt;&gt;</a>
     </div>
     <div class="page">
         {% if page.has_next %}
-        <a href='?page={{page.next_page_number}}'>></a>
+        <a id="next_page_link" href='?page={{page.next_page_number}}'>&gt;</a>
         {% else %}
-        <font color='grey'>></font>
+        <font color='grey'>&gt;</font>
         {% endif %}
     </div>
     <script>
@@ -84,14 +84,38 @@
     </script>
     <div class="page">
         {% if page.has_previous %}
-        <a href='?page={{page.previous_page_number}}'><</a>
+        <a id="pre_page_link" href='?page={{page.previous_page_number}}'>&lt;</a>
         {% else %}
-        <font color='grey'><</font>
+        <font color='grey'>&lt;</font>
         {% endif %}
     </div>
     <div class="page">
-        <a href='?page=1'><<</a>
+        <a id="first_page_link" href='?page=1'> &lt;&lt; </a>
     </div>
 </div>
-
+<script>
+	jQuery(function(){ /** Bind right, left to page nav links. */
+		jQuery(document).bind('keydown', 'right', function(event){
+			var href = jQuery("#next_page_link").attr("href");
+			if ("undefined" != typeof(href) && href && href.length > 0){
+				location.href = href;
+			}
+		}).bind('keydown', 'left', function(event){
+			var href = jQuery("#pre_page_link").attr("href");
+			if ("undefined" != typeof(href) && href && href.length > 0){
+				location.href = href;
+			}
+		}).bind('keydown', 'ctrl+right', function(event){
+			var href = jQuery("#last_page_link").attr("href");
+			if ("undefined" != typeof(href) && href && href.length > 0){
+				location.href = href;
+			}
+		}).bind('keydown', 'ctrl+left', function(event){
+			var href = jQuery("#first_page_link").attr("href");
+			if ("undefined" != typeof(href) && href && href.length > 0){
+				location.href = href;
+			}
+		});
+	});
+</script>
 {% endblock %}
