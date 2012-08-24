@@ -1,4 +1,4 @@
-#Tue May 08 11:37:50 CST 2012
+#Fri Aug 24 17:15:40 CST 2012
 eclipse.preferences.version=1
 encoding//bbs/create.py=UTF-8
 encoding//bbs/views.py=UTF-8
@@ -12,4 +12,5 @@ encoding//templates/home.html=UTF-8
 encoding//templates/search.html=UTF-8
 encoding//templates/user/change_avatar.htm=UTF-8
 encoding//templates/user/index.html=UTF-8
+encoding//users/new.py=UTF-8
 encoding//users/update.py=UTF-8

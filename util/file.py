@@ -10,14 +10,12 @@ import os
 #-------------------------------------------------------------------------------
 @login_required
 def download(request):
+    root = MEDIA_ROOT
     path = request.GET['path'].encode('utf-8')
-    if path.startswith('/var/www/uncle/'):
-        pass
-    else:
-        path = '/var/www/uncle/' + path
+    if not path.startswith(root):        
+        path = root + path
     
-    filepathname = path.split('/')
-    filename = filepathname[-1]
+    filename = path.split('/')[-1]
     
     try:
         f = open(path, 'rb') # read as binary data.  
@@ -60,16 +58,14 @@ def upload(path, file_obj, pre = '', type=''):
 # The original file name is xyz.xxx; If specify a target name, like abc,
 # then the new file name is abc.xxx.
 #-------------------------------------------------------------------------------
-def upload_and_replace(path, file_obj, target_name):
+def upload_and_replace(path, file_obj, target_name=''):
     root = MEDIA_ROOT
     if target_name:
         name = target_name + '.' + file_obj.name.encode('utf-8').split('.')[-1]
     else:
         name = file_obj.name.encode('utf-8')
 
-    if os.path.exists(root + path):
-        pass
-    else:
+    if not os.path.exists(root + path):        
         os.makedirs(root + path)
 
     destination = open('%s/%s' % (root + path, name), 'wb')
