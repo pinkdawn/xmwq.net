@@ -30,7 +30,7 @@ def change_avatar(req):
             _img = req.FILES['avatar']
                 
             if _img.size < 50*1024:
-                from tennis.util.file import upload_and_replace
+                from util.file import upload_and_replace
                 _a.avatar = upload_and_replace('avatar',_img,str(_a.user.id))
             else:
                 msg = "图片大小要小于50kb!"

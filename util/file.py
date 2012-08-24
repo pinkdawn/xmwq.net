@@ -2,6 +2,7 @@
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
+from settings import MEDIA_ROOT
 import os
 
 #-------------------------------------------------------------------------------
@@ -60,7 +61,7 @@ def upload(path, file_obj, pre = '', type=''):
 # then the new file name is abc.xxx.
 #-------------------------------------------------------------------------------
 def upload_and_replace(path, file_obj, target_name):
-    root = '/home/pinkdawn/webapps/u/'
+    root = MEDIA_ROOT
     if target_name:
         name = target_name + '.' + file_obj.name.encode('utf-8').split('.')[-1]
     else:
